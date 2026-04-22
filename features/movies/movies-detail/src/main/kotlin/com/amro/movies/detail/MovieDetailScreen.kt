@@ -13,6 +13,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.automirrored.filled.OpenInNew
+import androidx.compose.material.icons.outlined.ErrorOutline
 import androidx.compose.material3.AssistChip
 import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -30,12 +31,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.SubcomposeAsyncImage
 import com.amro.designsystem.components.ErrorState
 import com.amro.designsystem.components.LoadingState
+import com.amro.designsystem.theme.spacers
 import com.amro.movies.domain.model.MovieDetail
 import com.amro.movies.domain.model.MovieStatus
 import java.text.NumberFormat
@@ -65,7 +66,12 @@ fun MovieDetailRoute(
         Box(modifier = Modifier.fillMaxSize().padding(padding)) {
             when (val s = state) {
                 MovieDetailUiState.Loading -> LoadingState()
-                is MovieDetailUiState.Error -> ErrorState(message = s.message, onRetry = viewModel::retry)
+                is MovieDetailUiState.Error -> ErrorState(
+                    icon = Icons.Outlined.ErrorOutline,
+                    title = "Couldn't load movie",
+                    message = s.message,
+                    onRetry = viewModel::retry,
+                )
                 is MovieDetailUiState.Content -> MovieDetailContent(
                     movie = s.movie,
                     onOpenImdb = onOpenImdb,
@@ -84,7 +90,7 @@ private fun MovieDetailContent(
         modifier = Modifier
             .fillMaxSize()
             .verticalScroll(rememberScrollState())
-            .padding(bottom = 32.dp),
+            .padding(bottom = MaterialTheme.spacers.large),
     ) {
         val hero = movie.backdropUrl ?: movie.posterUrl
         if (hero != null) {
@@ -99,8 +105,11 @@ private fun MovieDetailContent(
         }
 
         Column(
-            modifier = Modifier.padding(horizontal = 16.dp, vertical = 16.dp),
-            verticalArrangement = Arrangement.spacedBy(12.dp),
+            modifier = Modifier.padding(
+                horizontal = MaterialTheme.spacers.medium,
+                vertical = MaterialTheme.spacers.medium,
+            ),
+            verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacers.medium),
         ) {
             Text(
                 text = movie.title,
@@ -118,7 +127,7 @@ private fun MovieDetailContent(
 
             if (movie.genres.isNotEmpty()) {
                 Row(
-                    horizontalArrangement = Arrangement.spacedBy(8.dp),
+                    horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacers.small),
                     modifier = Modifier.fillMaxWidth(),
                 ) {
                     movie.genres.take(4).forEach { g ->
@@ -142,7 +151,10 @@ private fun MovieDetailContent(
                     modifier = Modifier.fillMaxWidth(),
                 ) {
                     Icon(Icons.AutoMirrored.Filled.OpenInNew, contentDescription = null)
-                    Text("Open on IMDb", modifier = Modifier.padding(start = 8.dp))
+                    Text(
+                        "Open on IMDb",
+                        modifier = Modifier.padding(start = MaterialTheme.spacers.small),
+                    )
                 }
             }
         }
@@ -153,7 +165,7 @@ private fun MovieDetailContent(
 private fun VoteRow(movie: MovieDetail) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(16.dp),
+        horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacers.medium),
     ) {
         Column {
             Text(
@@ -184,7 +196,10 @@ private fun VoteRow(movie: MovieDetail) {
 @Composable
 private fun FactsCard(movie: MovieDetail) {
     Card(modifier = Modifier.fillMaxWidth()) {
-        Column(modifier = Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
+        Column(
+            modifier = Modifier.padding(MaterialTheme.spacers.medium),
+            verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacers.small),
+        ) {
             Fact("Status", movie.status.label())
             Fact("Budget", formatMoney(movie.budget))
             Fact("Revenue", formatMoney(movie.revenue))

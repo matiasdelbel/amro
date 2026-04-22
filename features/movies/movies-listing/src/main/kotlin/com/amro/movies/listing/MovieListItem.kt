@@ -27,6 +27,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import coil.compose.SubcomposeAsyncImage
+import com.amro.designsystem.theme.spacers
 import com.amro.movies.domain.model.Movie
 
 @Composable
@@ -41,7 +42,7 @@ internal fun MovieListItem(
         elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
     ) {
         Row(
-            modifier = Modifier.padding(12.dp),
+            modifier = Modifier.padding(MaterialTheme.spacers.medium),
             verticalAlignment = Alignment.CenterVertically,
         ) {
             Box(
@@ -65,9 +66,9 @@ internal fun MovieListItem(
 
             Column(
                 modifier = Modifier
-                    .padding(start = 12.dp)
+                    .padding(start = MaterialTheme.spacers.medium)
                     .weight(1f),
-                verticalArrangement = Arrangement.spacedBy(4.dp),
+                verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacers.extraSmall),
             ) {
                 Text(
                     text = movie.title,

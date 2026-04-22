@@ -21,7 +21,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.semantics.Role
-import androidx.compose.ui.unit.dp
+import com.amro.designsystem.theme.spacers
 import com.amro.movies.domain.usecase.SortCriterion
 import com.amro.movies.domain.usecase.SortDirection
 import com.amro.movies.domain.usecase.SortOption
@@ -37,7 +37,7 @@ internal fun SortOptionsSheet(
     var selectedDirection by remember(current) { mutableStateOf(current.direction) }
 
     ModalBottomSheet(onDismissRequest = onDismiss) {
-        Column(modifier = Modifier.padding(24.dp)) {
+        Column(modifier = Modifier.padding(MaterialTheme.spacers.large)) {
             Text("Sort by", style = MaterialTheme.typography.titleLarge)
             SortCriterion.entries.forEach { criterion ->
                 SelectableRow(
@@ -50,7 +50,7 @@ internal fun SortOptionsSheet(
             Text(
                 "Direction",
                 style = MaterialTheme.typography.titleMedium,
-                modifier = Modifier.padding(top = 16.dp),
+                modifier = Modifier.padding(top = MaterialTheme.spacers.medium),
             )
             SortDirection.entries.forEach { direction ->
                 SelectableRow(
@@ -64,7 +64,7 @@ internal fun SortOptionsSheet(
                 onClick = { onApply(selectedCriterion, selectedDirection) },
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(top = 24.dp),
+                    .padding(top = MaterialTheme.spacers.large),
             ) { Text("Apply") }
         }
     }
@@ -76,9 +76,9 @@ private fun SelectableRow(label: String, selected: Boolean, onClick: () -> Unit)
         modifier = Modifier
             .fillMaxWidth()
             .selectable(selected = selected, onClick = onClick, role = Role.RadioButton)
-            .padding(vertical = 8.dp),
+            .padding(vertical = MaterialTheme.spacers.small),
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(8.dp),
+        horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacers.small),
     ) {
         RadioButton(selected = selected, onClick = null)
         Text(text = label, style = MaterialTheme.typography.bodyLarge)

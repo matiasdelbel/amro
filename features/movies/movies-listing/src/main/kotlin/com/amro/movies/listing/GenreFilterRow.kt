@@ -8,10 +8,11 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material3.AssistChip
 import androidx.compose.material3.FilterChip
-import androidx.compose.runtime.Composable
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
+import com.amro.designsystem.theme.spacers
 import com.amro.movies.domain.model.Genre
 
 @Composable
@@ -27,8 +28,11 @@ internal fun GenreFilterRow(
         modifier = modifier
             .fillMaxWidth()
             .horizontalScroll(rememberScrollState())
-            .padding(horizontal = 12.dp, vertical = 8.dp),
-        horizontalArrangement = Arrangement.spacedBy(8.dp),
+            .padding(
+                horizontal = MaterialTheme.spacers.medium,
+                vertical = MaterialTheme.spacers.small,
+            ),
+        horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacers.small),
     ) {
         AssistChip(
             onClick = onClear,
