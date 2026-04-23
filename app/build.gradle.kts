@@ -45,11 +45,11 @@ android {
 
 dependencies {
     // Feature modules
-    implementation(project(":features:movies:movies-listing"))
-    implementation(project(":features:movies:movies-detail"))
+    implementation(project(":features:movies:ui-listing"))
+    implementation(project(":features:movies:ui-detail"))
 
     // Data / network wiring so Hilt can see the bindings at the composition root
-    implementation(project(":features:movies:movies-data"))
+    implementation(project(":features:movies:data"))
     implementation(project(":core:core-network"))
     implementation(project(":core:design-system"))
     implementation(project(":core:core-common"))

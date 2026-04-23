@@ -2,7 +2,7 @@ package com.amro.core.network
 
 /**
  * Static TMDB endpoint configuration exposed to the data layer. Keeping this in a single
- * place means the `movies-data` module doesn't have to know about BuildConfig or any
+ * place means the `movies:data` module doesn't have to know about BuildConfig or any
  * Android-specific plumbing.
  */
 object TmdbConfig {

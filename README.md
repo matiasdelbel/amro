@@ -50,10 +50,10 @@ AMRO/
 │   └── design-system/                      # (AAR) Material3 theme, shared Composables + previews
 └── features/
     └── movies/
-        ├── movies-domain/                  # (JVM) Entities, repository interface, use cases
-        ├── movies-data/                    # (AAR) DTOs, mappers, remote source, repo impl
-        ├── movies-listing/                 # (AAR) Trending list screen + VM + nav destination
-        └── movies-detail/                  # (AAR) Movie detail screen + VM + nav destination
+        ├── domain/                         # (JVM) Entities, repository interface, use cases
+        ├── data/                           # (AAR) DTOs, mappers, remote source, repo impl
+        ├── ui-listing/                     # (AAR) Trending list screen + VM + nav destination
+        └── ui-detail/                      # (AAR) Movie detail screen + VM + nav destination
 ```
 
 The `design-system` module owns the theme (`AmroTheme`), reusable Composables
@@ -63,12 +63,12 @@ Studio preview using it.
 
 ### Module dependency rules
 
-- **`movies-domain`** depends on nothing except `core-common`. No Android, no HTTP, no JSON.
+- **`movies:domain`** depends on nothing except `core-common`. No Android, no HTTP, no JSON.
   This is the contract layer — pure Kotlin, trivially testable.
-- **`movies-data`** depends on `movies-domain`, `core-common`, `core-network`. It implements
+- **`movies:data`** depends on `movies:domain`, `core-common`, `core-network`. It implements
   `MoviesRepository` and is the only module that knows about Ktor, DTOs, and TMDB URLs.
-- **`movies-listing` / `movies-detail`** each depend on `movies-domain` + `design-system`.
-  They do **not** depend on `movies-data`, `core-network`, or on each other. You can extract
+- **`movies:ui-listing` / `movies:ui-detail`** each depend on `movies:domain` + `design-system`.
+  They do **not** depend on `movies:data`, `core-network`, or on each other. You can extract
   either screen into its own app or swap out the network layer without touching them.
 - **`app`** is the only module that depends on everything. It owns the NavHost and the
   Hilt composition root.
@@ -168,9 +168,9 @@ These are natural next steps — the architecture is already set up to make them
 
 ### Adding a new screen inside Movies (e.g. actor list)
 
-1. Create `features/movies/movies-actors/` as a new Compose library module.
-2. `implementation(project(":features:movies:movies-domain"))` — if you need the repo, add a
-   new use case to `movies-domain` rather than reaching into `movies-data`.
+1. Create `features/movies/ui-actors/` as a new Compose library module.
+2. `implementation(project(":features:movies:domain"))` — if you need the repo, add a
+   new use case to `movies:domain` rather than reaching into `movies:data`.
 3. Expose `ACTORS_ROUTE` + `actorsDestination(onBack = …)` from a `navigation` package.
 4. In `app/.../AmroNavHost.kt`, call `actorsDestination(…)` inside the `NavHost`. That is the
    only place the app module touches the new screen.
@@ -206,7 +206,7 @@ These are natural next steps — the architecture is already set up to make them
 ## Known limitations / things I'd do with more time
 
 - **No offline cache.** Spec mentions a future wish for offline support; a natural follow-up is
-  to introduce Room in `movies-data` and wrap the remote + local sources behind the same
+  to introduce Room in `movies:data` and wrap the remote + local sources behind the same
   repository.
 - **No paging.** The top-100 endpoint is only 5 pages, so paging is overkill right now. If the
   requirement changes to "paged trending feed", Paging 3 integrates cleanly with Compose and

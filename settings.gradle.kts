@@ -1,3 +1,5 @@
+enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
+
 pluginManagement {
     includeBuild("build-logic")
 
@@ -32,7 +34,7 @@ include(":core:core-testing")
 include(":core:design-system")
 
 // Feature: Movies
-include(":features:movies:movies-domain")
-include(":features:movies:movies-data")
-include(":features:movies:movies-listing")
-include(":features:movies:movies-detail")
+include(":features:movies:domain")
+include(":features:movies:data")
+include(":features:movies:ui-listing")
+include(":features:movies:ui-detail")
