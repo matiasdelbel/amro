@@ -38,10 +38,16 @@ turbine = "1.2.0"
 coroutinesTest = "1.9.0"
 truth = "1.4.4"
 
-# Material (legacy - kept for compatibility, not used in Compose stack)
-material = "1.13.0"
-
 javaxInject = "1"
+
+# Screenshot testing
+roborazzi = "1.59.0"
+robolectric = "4.16.1"
+composablePreviewScanner = "0.8.2"
+
+# Android SDK
+compileSdk = "36"
+minSdk = "26"
 
 [libraries]
 # AndroidX core
@@ -99,10 +105,23 @@ mockk-android = { group = "io.mockk", name = "mockk-android", version.ref = "moc
 turbine = { group = "app.cash.turbine", name = "turbine", version.ref = "turbine" }
 google-truth = { group = "com.google.truth", name = "truth", version.ref = "truth" }
 
-# Material legacy
-material = { group = "com.google.android.material", name = "material", version.ref = "material" }
-
 javax-inject = { group = "javax.inject", name = "javax.inject", version.ref = "javaxInject" }
+
+# Build-logic (convention plugins): plugin artifacts consumed via compileOnly
+android-gradle-plugin = { group = "com.android.tools.build", name = "gradle", version.ref = "agp" }
+kotlin-gradle-plugin = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version.ref = "kotlin" }
+roborazzi-gradle-plugin = { group = "io.github.takahirom.roborazzi", name = "roborazzi-gradle-plugin", version.ref = "roborazzi" }
+# Needed on the convention plugin compile classpath so the `@ExperimentalRoborazziApi` marker
+# (declared in the runtime module) resolves when we call `generateComposePreviewRobolectricTests`.
+roborazzi-core-jvm = { group = "io.github.takahirom.roborazzi", name = "roborazzi-core-jvm", version.ref = "roborazzi" }
+
+# Roborazzi runtime
+roborazzi = { group = "io.github.takahirom.roborazzi", name = "roborazzi", version.ref = "roborazzi" }
+roborazzi-compose = { group = "io.github.takahirom.roborazzi", name = "roborazzi-compose", version.ref = "roborazzi" }
+roborazzi-junit-rule = { group = "io.github.takahirom.roborazzi", name = "roborazzi-junit-rule", version.ref = "roborazzi" }
+roborazzi-compose-preview-scanner-support = { group = "io.github.takahirom.roborazzi", name = "roborazzi-compose-preview-scanner-support", version.ref = "roborazzi" }
+composable-preview-scanner-android = { group = "io.github.sergio-sastre.ComposablePreviewScanner", name = "android", version.ref = "composablePreviewScanner" }
+robolectric = { group = "org.robolectric", name = "robolectric", version.ref = "robolectric" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
@@ -113,3 +132,8 @@ kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", versi
 compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
+roborazzi = { id = "io.github.takahirom.roborazzi", version.ref = "roborazzi" }
+
+# Convention plugins
+amro-android-library = { id = "amro.android.library" }
+amro-roborazzi = { id = "amro.roborazzi" }
