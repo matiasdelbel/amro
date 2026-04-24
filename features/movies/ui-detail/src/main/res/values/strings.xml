@@ -1,0 +1,44 @@
+<resources>
+    <!-- Top app bar / navigation -->
+    <string name="movie_detail_default_title">Movie</string>
+    <string name="movie_detail_back">Back</string>
+
+    <!--
+      DomainError → user-facing copy. Owned by the screen (not the VM) so each error variant
+      maps to a localisable string resource and translators can adjust per-screen wording.
+    -->
+    <string name="movie_detail_error_title">Couldn\'t load movie</string>
+    <string name="movie_detail_error_network">No internet connection. Check your network and try again.</string>
+    <string name="movie_detail_error_server">The movie could not be loaded (code %1$d).</string>
+    <string name="movie_detail_error_cancelled">Request cancelled.</string>
+    <string name="movie_detail_error_unknown">Unexpected error. Please try again.</string>
+
+    <!-- Content sections -->
+    <string name="movie_detail_overview">Overview</string>
+    <string name="movie_detail_open_imdb">Open on IMDb</string>
+
+    <!-- VoteRow / runtime / release -->
+    <!-- %1$.1f keeps the decimal-separator locale-aware (e.g. "1.8 ★" vs "1,8 ★"). -->
+    <string name="movie_detail_rating_format">%1$.1f ★</string>
+    <plurals name="movie_detail_votes">
+        <item quantity="one">%1$d vote</item>
+        <item quantity="other">%1$d votes</item>
+    </plurals>
+    <string name="movie_detail_runtime_minutes">%1$d min</string>
+    <string name="movie_detail_runtime_label">Runtime</string>
+    <string name="movie_detail_release_label">Release</string>
+
+    <!-- FactsCard -->
+    <string name="movie_detail_status_label">Status</string>
+    <string name="movie_detail_budget_label">Budget</string>
+    <string name="movie_detail_revenue_label">Revenue</string>
+
+    <!-- MovieStatus → display labels -->
+    <string name="movie_status_rumored">Rumored</string>
+    <string name="movie_status_planned">Planned</string>
+    <string name="movie_status_in_production">In Production</string>
+    <string name="movie_status_post_production">Post Production</string>
+    <string name="movie_status_released">Released</string>
+    <string name="movie_status_canceled">Canceled</string>
+    <string name="movie_status_unknown">Unknown</string>
+</resources>

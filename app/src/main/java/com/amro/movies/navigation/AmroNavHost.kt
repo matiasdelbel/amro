@@ -3,8 +3,8 @@ package com.amro.movies.navigation
 import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
-import com.amro.movies.detail.navigation.movieDetailDestination
-import com.amro.movies.detail.navigation.movieDetailPath
+import com.amro.movies.detail.movieDetailDestination
+import com.amro.movies.detail.movieDetailPath
 import com.amro.movies.listing.navigation.MOVIES_LISTING_ROUTE
 import com.amro.movies.listing.navigation.moviesListingDestination
 

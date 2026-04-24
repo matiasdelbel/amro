@@ -4,7 +4,6 @@ import androidx.lifecycle.SavedStateHandle
 import app.cash.turbine.test
 import com.amro.core.common.result.DomainError
 import com.amro.core.common.result.DomainResult
-import com.amro.movies.detail.navigation.MOVIE_ID_ARG
 import com.amro.movies.domain.Genre
 import com.amro.movies.domain.MovieDetail
 import com.amro.movies.domain.MovieStatus
@@ -29,6 +28,7 @@ class MovieDetailViewModelTest {
     private val repository: MoviesRepository = mockk()
 
     @Before fun setUp() { Dispatchers.setMain(UnconfinedTestDispatcher()) }
+
     @After fun tearDown() { Dispatchers.resetMain() }
 
     @Test
@@ -65,7 +65,7 @@ class MovieDetailViewModelTest {
     }
 
     @Test
-    fun `server failure is surfaced as Error state with code in message`() = runTest {
+    fun `server failure is surfaced as Error state carrying the typed DomainError`() = runTest {
         coEvery { repository.getMovieDetail(7) } returns DomainResult.Failure(DomainError.Server(404))
         val vm = build(movieId = 7)
 
@@ -73,7 +73,11 @@ class MovieDetailViewModelTest {
             var state = awaitItem()
             if (state is MovieDetailUiState.Loading) state = awaitItem()
             assertThat(state).isInstanceOf(MovieDetailUiState.Error::class.java)
-            assertThat((state as MovieDetailUiState.Error).message).contains("404")
+            // The VM no longer stringifies the error — it just propagates the typed
+            // `DomainError` so the screen can localise it via `stringResource(...)`.
+            val error = (state as MovieDetailUiState.Error).error
+            assertThat(error).isInstanceOf(DomainError.Server::class.java)
+            assertThat((error as DomainError.Server).code).isEqualTo(404)
         }
     }
 
