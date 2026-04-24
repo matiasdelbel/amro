@@ -19,9 +19,7 @@ internal class MoviesRemoteDataSource @Inject constructor(
     private val client: HttpClient,
 ) {
     suspend fun getTrendingMovies(page: Int): TrendingMoviesResponseDto =
-        client.get("trending/movie/week") {
-            parameter("page", page)
-        }.body()
+        client.get("trending/movie/week") { parameter("page", page) }.body()
 
     suspend fun getMovieGenres(): GenresResponseDto =
         client.get("genre/movie/list").body()

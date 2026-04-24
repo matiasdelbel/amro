@@ -440,6 +440,7 @@ private fun EmptyFilterState(modifier: Modifier = Modifier) {
 private fun DomainError.toMessage(): String = when (this) {
     is DomainError.Network -> stringResource(R.string.movies_listing_error_network)
     is DomainError.Server -> stringResource(R.string.movies_listing_error_server, code)
+    is DomainError.Parsing -> stringResource(R.string.movies_listing_error_parsing)
     is DomainError.Cancelled -> stringResource(R.string.movies_listing_error_cancelled)
     is DomainError.Unknown -> stringResource(R.string.movies_listing_error_unknown)
 }

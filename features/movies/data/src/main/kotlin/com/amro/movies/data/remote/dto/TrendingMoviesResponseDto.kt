@@ -1,5 +1,8 @@
+@file:OptIn(InternalSerializationApi::class)
+
 package com.amro.movies.data.remote.dto
 
+import kotlinx.serialization.InternalSerializationApi
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -7,8 +10,6 @@ import kotlinx.serialization.Serializable
 internal data class TrendingMoviesResponseDto(
     val page: Int,
     val results: List<TrendingMovieDto> = emptyList(),
-    @SerialName("total_pages") val totalPages: Int = 0,
-    @SerialName("total_results") val totalResults: Int = 0,
 )
 
 @Serializable

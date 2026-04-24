@@ -53,6 +53,7 @@ dependencies {
     implementation(project(":core:core-network"))
     implementation(project(":core:design-system"))
     implementation(project(":core:core-common"))
+    implementation(project(":core:core-common-di"))
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)

@@ -24,6 +24,13 @@ sealed class DomainError(open val cause: Throwable? = null) {
     /** Server returned a non-2xx response. */
     data class Server(val code: Int, override val cause: Throwable? = null) : DomainError(cause)
 
+    /**
+     * The server's response could not be parsed (malformed JSON, missing required field,
+     * schema drift, etc.). Distinct from [Server] because retrying won't help — the issue is
+     * a contract mismatch between client and server.
+     */
+    data class Parsing(override val cause: Throwable? = null) : DomainError(cause)
+
     /** Request was cancelled by the caller. */
     data class Cancelled(override val cause: Throwable? = null) : DomainError(cause)
 

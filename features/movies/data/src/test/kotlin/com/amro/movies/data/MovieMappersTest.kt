@@ -1,4 +1,4 @@
-package com.amro.movies.data.mapper
+package com.amro.movies.data
 
 import com.amro.movies.data.remote.dto.GenreDto
 import com.amro.movies.data.remote.dto.MovieDetailDto
@@ -54,6 +54,14 @@ class MovieMappersTest {
     fun `unknown status strings map to Unknown`() {
         val dto = MovieDetailDto(id = 1, status = "Something weird")
         assertThat(dto.toDomain().status).isEqualTo(MovieStatus.Unknown)
+    }
+
+    @Test
+    fun `status with surrounding whitespace is trimmed before mapping`() {
+        // Defensive `trim()` in the mapper protects against an upstream typo silently
+        // demoting every detail to `Unknown`.
+        val dto = MovieDetailDto(id = 1, status = "  Released  ")
+        assertThat(dto.toDomain().status).isEqualTo(MovieStatus.Released)
     }
 
     @Test

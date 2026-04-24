@@ -29,6 +29,7 @@ include(":app")
 
 // Core modules
 include(":core:core-common")
+include(":core:core-common-di")
 include(":core:core-network")
 include(":core:core-testing")
 include(":core:design-system")

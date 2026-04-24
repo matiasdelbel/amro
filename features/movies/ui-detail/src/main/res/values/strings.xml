@@ -10,6 +10,11 @@
     <string name="movie_detail_error_title">Couldn\'t load movie</string>
     <string name="movie_detail_error_network">No internet connection. Check your network and try again.</string>
     <string name="movie_detail_error_server">The movie could not be loaded (code %1$d).</string>
+    <!--
+      Distinct from the generic server / unknown copy: a parsing failure means the response
+      shape is incompatible, so retrying won't help and we tell the user that explicitly.
+    -->
+    <string name="movie_detail_error_parsing">We received an unexpected response from the server. The app may need to be updated.</string>
     <string name="movie_detail_error_cancelled">Request cancelled.</string>
     <string name="movie_detail_error_unknown">Unexpected error. Please try again.</string>
 

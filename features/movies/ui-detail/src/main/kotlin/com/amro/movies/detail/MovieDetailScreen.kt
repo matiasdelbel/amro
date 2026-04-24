@@ -347,6 +347,7 @@ private fun formatMoney(value: Long): String {
 private fun DomainError.toMessage(): String = when (this) {
     is DomainError.Network -> stringResource(R.string.movie_detail_error_network)
     is DomainError.Server -> stringResource(R.string.movie_detail_error_server, code)
+    is DomainError.Parsing -> stringResource(R.string.movie_detail_error_parsing)
     is DomainError.Cancelled -> stringResource(R.string.movie_detail_error_cancelled)
     is DomainError.Unknown -> stringResource(R.string.movie_detail_error_unknown)
 }

@@ -1,4 +1,4 @@
-package com.amro.movies.data.mapper
+package com.amro.movies.data
 
 import com.amro.core.network.TmdbConfig
 import com.amro.movies.data.remote.dto.GenreDto
@@ -59,7 +59,7 @@ private fun parseLocalDate(raw: String?): LocalDate? {
     }
 }
 
-private fun String?.toMovieStatus(): MovieStatus = when (this) {
+private fun String?.toMovieStatus(): MovieStatus = when (this?.trim()) {
     "Rumored" -> MovieStatus.Rumored
     "Planned" -> MovieStatus.Planned
     "In Production" -> MovieStatus.InProduction

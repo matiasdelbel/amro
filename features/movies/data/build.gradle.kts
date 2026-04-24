@@ -10,9 +10,10 @@ android {
 }
 
 dependencies {
-    implementation(project(":features:movies:domain"))
-    implementation(project(":core:core-common"))
-    implementation(project(":core:core-network"))
+    implementation(projects.core.coreCommon)
+    implementation(projects.core.coreCommonDi)
+    implementation(projects.core.coreNetwork)
+    implementation(projects.features.movies.domain)
 
     implementation(libs.ktor.client.core)
     implementation(libs.ktor.client.content.negotiation)
@@ -22,6 +23,6 @@ dependencies {
     implementation(libs.hilt.android)
     ksp(libs.hilt.compiler)
 
-    testImplementation(project(":core:core-testing"))
+    testImplementation(projects.core.coreTesting)
     testImplementation(libs.ktor.client.mock)
 }
