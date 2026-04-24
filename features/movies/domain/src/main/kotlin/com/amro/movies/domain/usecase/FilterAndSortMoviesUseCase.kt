@@ -1,20 +1,10 @@
 package com.amro.movies.domain.usecase
 
 import com.amro.movies.domain.Movie
+import com.amro.movies.domain.SortCriterion
+import com.amro.movies.domain.SortDirection
+import com.amro.movies.domain.SortOption
 import javax.inject.Inject
-
-enum class SortCriterion { Popularity, Title, ReleaseDate }
-enum class SortDirection { Ascending, Descending }
-
-data class SortOption(
-    val criterion: SortCriterion = SortCriterion.Popularity,
-    val direction: SortDirection = SortDirection.Descending,
-) {
-    companion object {
-        /** Popularity descending, as required by the MVP spec. */
-        val Default = SortOption(SortCriterion.Popularity, SortDirection.Descending)
-    }
-}
 
 /**
  * Pure, side-effect-free filtering + sorting for trending movies.

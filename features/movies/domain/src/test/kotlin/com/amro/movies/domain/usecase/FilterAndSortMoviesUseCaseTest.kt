@@ -2,6 +2,9 @@ package com.amro.movies.domain.usecase
 
 import com.amro.movies.domain.Genre
 import com.amro.movies.domain.Movie
+import com.amro.movies.domain.SortCriterion
+import com.amro.movies.domain.SortDirection
+import com.amro.movies.domain.SortOption
 import com.google.common.truth.Truth.assertThat
 import java.time.LocalDate
 import org.junit.Test

@@ -8,8 +8,8 @@ import com.amro.movies.domain.Movie
 import com.amro.movies.domain.repository.MoviesRepository
 import com.amro.movies.domain.usecase.FilterAndSortMoviesUseCase
 import com.amro.movies.domain.usecase.GetTrendingMoviesUseCase
-import com.amro.movies.domain.usecase.SortCriterion
-import com.amro.movies.domain.usecase.SortDirection
+import com.amro.movies.domain.SortCriterion
+import com.amro.movies.domain.SortDirection
 import com.google.common.truth.Truth.assertThat
 import io.mockk.coEvery
 import io.mockk.mockk

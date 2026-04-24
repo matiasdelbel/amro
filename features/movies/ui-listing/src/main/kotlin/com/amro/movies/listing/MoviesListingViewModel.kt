@@ -7,9 +7,9 @@ import com.amro.movies.domain.Movie
 import com.amro.movies.domain.Genre
 import com.amro.movies.domain.usecase.FilterAndSortMoviesUseCase
 import com.amro.movies.domain.usecase.GetTrendingMoviesUseCase
-import com.amro.movies.domain.usecase.SortCriterion
-import com.amro.movies.domain.usecase.SortDirection
-import com.amro.movies.domain.usecase.SortOption
+import com.amro.movies.domain.SortCriterion
+import com.amro.movies.domain.SortDirection
+import com.amro.movies.domain.SortOption
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow

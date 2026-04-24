@@ -63,9 +63,9 @@ import com.amro.designsystem.theme.PreviewSurface
 import com.amro.designsystem.theme.spacers
 import com.amro.movies.domain.Genre
 import com.amro.movies.domain.Movie
-import com.amro.movies.domain.usecase.SortCriterion
-import com.amro.movies.domain.usecase.SortDirection
-import com.amro.movies.domain.usecase.SortOption
+import com.amro.movies.domain.SortCriterion
+import com.amro.movies.domain.SortDirection
+import com.amro.movies.domain.SortOption
 import java.time.LocalDate
 
 @Composable
