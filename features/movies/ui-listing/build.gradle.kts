@@ -13,7 +13,7 @@ android {
 }
 
 dependencies {
-    implementation(projects.core.coreCommon)
+    implementation(projects.core.domain)
     implementation(projects.core.designSystem)
     implementation(projects.features.movies.domain)
 
@@ -34,5 +34,5 @@ dependencies {
 
     debugImplementation(libs.androidx.compose.ui.tooling)
 
-    testImplementation(projects.core.coreTesting)
+    testImplementation(projects.core.testing)
 }

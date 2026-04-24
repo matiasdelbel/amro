@@ -1,6 +1,6 @@
 package com.amro.movies.domain.repository
 
-import com.amro.core.common.result.DomainResult
+import com.amro.core.domain.DomainResult
 import com.amro.movies.domain.Movie
 import com.amro.movies.domain.MovieDetail
 
@@ -9,7 +9,7 @@ import com.amro.movies.domain.MovieDetail
  *
  * No framework, HTTP, or serialization types should appear in this interface. Signatures use
  * plain suspend functions + [DomainResult] – the data layer maps every transport exception
- * into a [com.amro.core.common.result.DomainError].
+ * into a [com.amro.core.domain.DomainError].
  */
 interface MoviesRepository {
 

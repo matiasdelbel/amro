@@ -2,7 +2,7 @@ package com.amro.movies.listing
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.amro.core.common.result.DomainResult
+import com.amro.core.domain.DomainResult
 import com.amro.movies.domain.Movie
 import com.amro.movies.domain.Genre
 import com.amro.movies.domain.usecase.FilterAndSortMoviesUseCase

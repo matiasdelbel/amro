@@ -1,18 +1,14 @@
 plugins {
-    alias(libs.plugins.kotlin.jvm)
+    alias(libs.plugins.amro.android.library)
 }
 
-java {
-    sourceCompatibility = JavaVersion.VERSION_11
-    targetCompatibility = JavaVersion.VERSION_11
-}
-
-kotlin {
-    jvmToolchain(11)
+android {
+    namespace = "com.amro.movies.domain"
 }
 
 dependencies {
-    api(projects.core.coreCommon)
+    api(projects.core.domain)
+    implementation(libs.javax.inject)
 
-    testImplementation(projects.core.coreTesting)
+    testImplementation(projects.core.testing)
 }

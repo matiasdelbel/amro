@@ -1,6 +1,6 @@
 package com.amro.movies.listing
 
-import com.amro.core.common.result.DomainError
+import com.amro.core.domain.DomainError
 import com.amro.movies.domain.Genre
 import com.amro.movies.domain.Movie
 import com.amro.movies.domain.SortOption

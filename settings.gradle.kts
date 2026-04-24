@@ -1,3 +1,5 @@
+@file:Suppress("UnstableApiUsage")
+
 enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 
 pluginManagement {
@@ -28,11 +30,11 @@ rootProject.name = "AMRO"
 include(":app")
 
 // Core modules
-include(":core:core-common")
-include(":core:core-common-di")
-include(":core:core-network")
-include(":core:core-testing")
+include(":core:coroutine")
 include(":core:design-system")
+include(":core:domain")
+include(":core:network")
+include(":core:testing")
 
 // Feature: Movies
 include(":features:movies:domain")

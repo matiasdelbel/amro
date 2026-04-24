@@ -3,7 +3,7 @@ package com.amro.movies.detail
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.amro.core.common.result.DomainResult
+import com.amro.core.domain.DomainResult
 import com.amro.movies.domain.usecase.GetMovieDetailUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject

@@ -44,13 +44,14 @@ module is the only place that knows about multiple features; it wires navigation
 AMRO/
 ├── app/                                    # Composition root — Application, MainActivity, NavHost
 ├── core/
-│   ├── core-common/                        # (JVM) DispatcherProvider, DomainResult, DomainError
-│   ├── core-network/                       # (AAR) Ktor HttpClient + TMDB auth plumbing
-│   ├── core-testing/                       # (JVM) Test utils shared by every module
+│   ├── domain/                             # (JVM) DomainResult, DomainError + helpers
+│   ├── coroutine/                          # (AAR) DispatcherProvider + its Hilt binding
+│   ├── network/                            # (AAR) Ktor HttpClient + TMDB auth plumbing
+│   ├── testing/                            # (AAR) Test utils shared by every module
 │   └── design-system/                      # (AAR) Material3 theme, shared Composables + previews
 └── features/
     └── movies/
-        ├── domain/                         # (JVM) Entities, repository interface, use cases
+        ├── domain/                         # (AAR) Entities, repository interface, use cases (pure Kotlin code)
         ├── data/                           # (AAR) DTOs, mappers, remote source, repo impl
         ├── ui-listing/                     # (AAR) Trending list screen + VM + nav destination
         └── ui-detail/                      # (AAR) Movie detail screen + VM + nav destination
@@ -63,12 +64,12 @@ Studio preview using it.
 
 ### Module dependency rules
 
-- **`movies:domain`** depends on nothing except `core-common`. No Android, no HTTP, no JSON.
+- **`movies:domain`** depends on nothing except `core:domain`. No Android, no HTTP, no JSON.
   This is the contract layer — pure Kotlin, trivially testable.
-- **`movies:data`** depends on `movies:domain`, `core-common`, `core-network`. It implements
-  `MoviesRepository` and is the only module that knows about Ktor, DTOs, and TMDB URLs.
+- **`movies:data`** depends on `movies:domain`, `core:domain`, `core:coroutine`, `core:network`.
+  It implements `MoviesRepository` and is the only module that knows about Ktor, DTOs, and TMDB URLs.
 - **`movies:ui-listing` / `movies:ui-detail`** each depend on `movies:domain` + `design-system`.
-  They do **not** depend on `movies:data`, `core-network`, or on each other. You can extract
+  They do **not** depend on `movies:data`, `core:network`, or on each other. You can extract
   either screen into its own app or swap out the network layer without touching them.
 - **`app`** is the only module that depends on everything. It owns the NavHost and the
   Hilt composition root.

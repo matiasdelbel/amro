@@ -2,8 +2,8 @@ package com.amro.movies.detail
 
 import androidx.lifecycle.SavedStateHandle
 import app.cash.turbine.test
-import com.amro.core.common.result.DomainError
-import com.amro.core.common.result.DomainResult
+import com.amro.core.domain.DomainError
+import com.amro.core.domain.DomainResult
 import com.amro.movies.domain.Genre
 import com.amro.movies.domain.MovieDetail
 import com.amro.movies.domain.MovieStatus
@@ -21,6 +21,7 @@ import kotlinx.coroutines.test.setMain
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
+import kotlin.jvm.java
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class MovieDetailViewModelTest {

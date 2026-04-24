@@ -1,8 +1,8 @@
 package com.amro.movies.data
 
-import com.amro.core.common.dispatcher.DispatcherProvider
-import com.amro.core.common.result.DomainError
-import com.amro.core.common.result.DomainResult
+import com.amro.core.coroutine.dispatcher.DispatcherProvider
+import com.amro.core.domain.DomainError
+import com.amro.core.domain.DomainResult
 import com.amro.movies.data.remote.MoviesRemoteDataSource
 import com.amro.movies.domain.Genre
 import com.amro.movies.domain.Movie

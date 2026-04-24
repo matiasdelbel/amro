@@ -50,10 +50,10 @@ dependencies {
 
     // Data / network wiring so Hilt can see the bindings at the composition root
     implementation(project(":features:movies:data"))
-    implementation(project(":core:core-network"))
+    implementation(project(":core:network"))
     implementation(project(":core:design-system"))
-    implementation(project(":core:core-common"))
-    implementation(project(":core:core-common-di"))
+    implementation(project(":core:domain"))
+    implementation(project(":core:coroutine"))
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
@@ -70,7 +70,7 @@ dependencies {
     implementation(libs.hilt.navigation.compose)
     ksp(libs.hilt.compiler)
 
-    testImplementation(project(":core:core-testing"))
+    testImplementation(project(":core:testing"))
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(platform(libs.androidx.compose.bom))

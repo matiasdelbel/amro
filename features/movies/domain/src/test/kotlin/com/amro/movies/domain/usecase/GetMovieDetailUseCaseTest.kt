@@ -1,7 +1,7 @@
 package com.amro.movies.domain.usecase
 
-import com.amro.core.common.result.DomainError
-import com.amro.core.common.result.DomainResult
+import com.amro.core.domain.DomainError
+import com.amro.core.domain.DomainResult
 import com.amro.movies.domain.MovieDetail
 import com.amro.movies.domain.MovieStatus
 import com.amro.movies.domain.repository.MoviesRepository

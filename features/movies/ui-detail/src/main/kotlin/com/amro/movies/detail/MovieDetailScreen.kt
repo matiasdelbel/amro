@@ -44,7 +44,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.SubcomposeAsyncImage
-import com.amro.core.common.result.DomainError
+import com.amro.core.domain.DomainError
 import com.amro.designsystem.components.ErrorState
 import com.amro.designsystem.components.LoadingState
 import com.amro.designsystem.theme.PreviewSurface
