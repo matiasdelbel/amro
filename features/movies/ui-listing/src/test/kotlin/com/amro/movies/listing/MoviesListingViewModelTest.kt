@@ -53,7 +53,7 @@ class MoviesListingViewModelTest {
             assertThat(final.allMovies).hasSize(3)
             assertThat(final.visibleMovies).hasSize(3)
             assertThat(final.availableGenres.map { it.name }).containsExactly("Action", "Comedy").inOrder()
-            assertThat(final.errorMessage).isNull()
+            assertThat(final.error).isNull()
         }
     }
 
@@ -91,14 +91,16 @@ class MoviesListingViewModelTest {
     }
 
     @Test
-    fun `failure maps to user-facing message and clears loading`() = runTest {
+    fun `failure surfaces the typed DomainError and clears loading`() = runTest {
         coEvery { repository.getTrendingTop100() } returns DomainResult.Failure(DomainError.Network())
         val vm = buildVm()
 
         vm.state.test {
             val final = awaitLatestStable()
             assertThat(final.isLoading).isFalse()
-            assertThat(final.errorMessage).contains("No internet")
+            // The VM no longer stringifies the error — it just propagates the typed
+            // `DomainError` so the screen can localise it via `stringResource(...)`.
+            assertThat(final.error).isInstanceOf(DomainError.Network::class.java)
             assertThat(final.allMovies).isEmpty()
         }
     }

@@ -1,0 +1,42 @@
+<resources>
+    <!-- Top app bar / actions -->
+    <string name="movies_listing_title">Trending this week</string>
+    <string name="movies_listing_sort_action">Sort</string>
+    <string name="movies_listing_refresh_action">Refresh</string>
+
+    <!--
+      DomainError → user-facing copy. Owned by the screen (not the VM) so each error variant
+      maps to a localisable string resource and translators can adjust per-screen wording.
+    -->
+    <string name="movies_listing_error_title">Couldn\'t load movies</string>
+    <string name="movies_listing_error_network">No internet connection. Check your network and try again.</string>
+    <string name="movies_listing_error_server">Something went wrong on our side (code %1$d). Please try again.</string>
+    <string name="movies_listing_error_cancelled">Request cancelled.</string>
+    <string name="movies_listing_error_unknown">Unexpected error. Please try again.</string>
+
+    <!-- Empty filter result -->
+    <string name="movies_listing_empty_filter_title">No movies match the selected genres.</string>
+    <string name="movies_listing_empty_filter_message">Try removing a genre to see more results.</string>
+
+    <!-- Genre filter row -->
+    <string name="movies_listing_genre_chip_all">All</string>
+    <string name="movies_listing_genre_chip_clear">Clear</string>
+
+    <!-- MovieListItem -->
+    <!-- %1$.1f keeps the decimal separator locale-aware (e.g. "7.5 ★" vs "7,5 ★"). -->
+    <string name="movies_listing_rating_format">%1$.1f ★</string>
+
+    <!-- SortOptionsSheet -->
+    <string name="movies_listing_sort_sheet_title">Sort by</string>
+    <string name="movies_listing_sort_sheet_direction_title">Direction</string>
+    <string name="movies_listing_sort_sheet_apply">Apply</string>
+
+    <!-- SortCriterion → display labels -->
+    <string name="sort_criterion_popularity">Popularity</string>
+    <string name="sort_criterion_title">Title</string>
+    <string name="sort_criterion_release_date">Release date</string>
+
+    <!-- SortDirection → display labels -->
+    <string name="sort_direction_ascending">Ascending</string>
+    <string name="sort_direction_descending">Descending</string>
+</resources>

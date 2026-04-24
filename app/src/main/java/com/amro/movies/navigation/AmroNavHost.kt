@@ -5,8 +5,8 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
 import com.amro.movies.detail.movieDetailDestination
 import com.amro.movies.detail.movieDetailPath
-import com.amro.movies.listing.navigation.MOVIES_LISTING_ROUTE
-import com.amro.movies.listing.navigation.moviesListingDestination
+import com.amro.movies.listing.MOVIES_LISTING_ROUTE
+import com.amro.movies.listing.moviesListingDestination
 
 /**
  * Top-level Jetpack Compose navigation graph.

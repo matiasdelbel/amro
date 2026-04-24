@@ -3,20 +3,19 @@ plugins {
     alias(libs.plugins.compose.compiler)
     alias(libs.plugins.hilt)
     alias(libs.plugins.ksp)
+    alias(libs.plugins.amro.roborazzi)
 }
 
 android {
     namespace = "com.amro.movies.listing"
 
-    buildFeatures {
-        compose = true
-    }
+    buildFeatures { compose = true }
 }
 
 dependencies {
-    implementation(project(":features:movies:domain"))
-    implementation(project(":core:core-common"))
-    implementation(project(":core:design-system"))
+    implementation(projects.core.coreCommon)
+    implementation(projects.core.designSystem)
+    implementation(projects.features.movies.domain)
 
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.compose.ui)
@@ -35,5 +34,5 @@ dependencies {
 
     debugImplementation(libs.androidx.compose.ui.tooling)
 
-    testImplementation(project(":core:core-testing"))
+    testImplementation(projects.core.coreTesting)
 }
