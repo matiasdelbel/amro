@@ -8,12 +8,12 @@ plugins {
 
 android {
     namespace = "com.amro.movies"
-    compileSdk = 36
+    compileSdk = libs.versions.compileSdk.get().toInt()
 
     defaultConfig {
         applicationId = "com.amro.movies"
-        minSdk = 26
-        targetSdk = 36
+        minSdk = libs.versions.minSdk.get().toInt()
+        targetSdk = libs.versions.compileSdk.get().toInt()
         versionCode = 1
         versionName = "1.0"
 
@@ -35,25 +35,26 @@ android {
     }
 
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
+
     kotlinOptions {
-        jvmTarget = "11"
+        jvmTarget = "17"
     }
 }
 
 dependencies {
     // Feature modules
-    implementation(project(":features:movies:ui-listing"))
-    implementation(project(":features:movies:ui-detail"))
+    implementation(projects.features.movies.uiListing)
+    implementation(projects.features.movies.uiDetail)
 
     // Data / network wiring so Hilt can see the bindings at the composition root
-    implementation(project(":features:movies:data"))
-    implementation(project(":core:network"))
-    implementation(project(":core:design-system"))
-    implementation(project(":core:domain"))
-    implementation(project(":core:coroutine"))
+    implementation(projects.features.movies.data)
+    implementation(projects.core.coroutine)
+    implementation(projects.core.designSystem)
+    implementation(projects.core.domain)
+    implementation(projects.core.network)
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
@@ -69,11 +70,4 @@ dependencies {
     implementation(libs.hilt.android)
     implementation(libs.hilt.navigation.compose)
     ksp(libs.hilt.compiler)
-
-    testImplementation(project(":core:testing"))
-    androidTestImplementation(libs.androidx.junit)
-    androidTestImplementation(libs.androidx.espresso.core)
-    androidTestImplementation(platform(libs.androidx.compose.bom))
-    androidTestImplementation(libs.androidx.compose.ui.test.junit4)
-    debugImplementation(libs.androidx.compose.ui.test.manifest)
 }

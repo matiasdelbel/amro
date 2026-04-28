@@ -4,6 +4,7 @@ import com.amro.movies.domain.Movie
 import com.amro.movies.domain.SortCriterion
 import com.amro.movies.domain.SortDirection
 import com.amro.movies.domain.SortOption
+import java.util.Locale
 import javax.inject.Inject
 
 /**
@@ -38,8 +39,8 @@ class FilterAndSortMoviesUseCase @Inject constructor() {
                 else filtered.sortedByDescending { it.popularity }
 
             SortCriterion.Title ->
-                if (ascending) filtered.sortedBy { it.title.lowercase() }
-                else filtered.sortedByDescending { it.title.lowercase() }
+                if (ascending) filtered.sortedBy { it.title.lowercase(Locale.ROOT) }
+                else filtered.sortedByDescending { it.title.lowercase(Locale.ROOT) }
 
             SortCriterion.ReleaseDate -> {
                 val withDates = filtered.filter { it.releaseDate != null }

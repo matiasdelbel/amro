@@ -1,6 +1,7 @@
 package com.amro.core.network.di
 
 import com.amro.core.network.TmdbConfig
+import com.amro.core.network.BuildConfig
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -23,6 +24,7 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object NetworkModule {
+    private val apiKeyRegex = Regex("""([?&]api_key=)[^&\s]+""")
 
     @Provides
     @Singleton
@@ -47,11 +49,15 @@ object NetworkModule {
             socketTimeoutMillis = 15_000
         }
 
-        install(Logging) {
-            level = LogLevel.INFO
-            logger = object : Logger {
-                override fun log(message: String) {
-                    android.util.Log.d("KtorClient", message)
+        if (BuildConfig.DEBUG) {
+            install(Logging) {
+                level = LogLevel.INFO
+                logger = object : Logger {
+                    override fun log(message: String) {
+                        // Avoid leaking credentials while still keeping request logs useful.
+                        val redacted = apiKeyRegex.replace(message, "$1<redacted>")
+                        android.util.Log.d("KtorClient", redacted)
+                    }
                 }
             }
         }
