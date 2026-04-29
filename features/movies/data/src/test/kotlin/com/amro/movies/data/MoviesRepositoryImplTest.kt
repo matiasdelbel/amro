@@ -106,6 +106,34 @@ class MoviesRepositoryImplTest {
     }
 
     @Test
+    fun `getTrendingTop100 fails the whole call when any single page errors out`() = runTest {
+        // Pages 1-3 return a valid payload; page 4 returns 500. Pinning the documented
+        // "all-or-nothing" semantics: a partial 60-movie list would be confusing UX, so the
+        // first failing sibling must cancel the others and surface as a Failure.
+        val handler = MockEngine { request ->
+            val path = request.url.encodedPath
+            when {
+                path.endsWith("genre/movie/list") ->
+                    respondJson("""{"genres":[{"id":28,"name":"Action"}]}""")
+                path.contains("trending/movie/week") -> {
+                    val page = request.url.parameters["page"]?.toInt() ?: 1
+                    if (page == 4) respondError(HttpStatusCode.InternalServerError)
+                    else respondJson(
+                        """{"page":$page,"results":[{"id":${page * 10},"title":"M$page","genre_ids":[28],"popularity":1.0}]}"""
+                    )
+                }
+                else -> respondJson("{}")
+            }
+        }
+        val repo = buildRepo(handler)
+
+        val result = repo.getTrendingTop100() as DomainResult.Failure
+
+        val error = result.error as DomainError.Server
+        assertThat(error.code).isEqualTo(500)
+    }
+
+    @Test
     fun `getTrendingTop100 deduplicates and truncates across multiple pages`() = runTest {
         // Each page returns 25 distinct movies (page N: ids N*100 + 0..24). With 5 pages
         // that's 125 movies → after `take(100)` we expect exactly 100, all distinct.

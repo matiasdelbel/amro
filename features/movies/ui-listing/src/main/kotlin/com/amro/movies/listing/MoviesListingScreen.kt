@@ -274,11 +274,23 @@ internal fun MovieListItem(
                         overflow = TextOverflow.Ellipsis,
                     )
                 }
-                Text(
-                    text = stringResource(R.string.movies_listing_rating_format, movie.voteAverage),
-                    style = MaterialTheme.typography.labelMedium,
-                    color = MaterialTheme.colorScheme.primary,
-                )
+
+                Row(
+                    horizontalArrangement = Arrangement.spacedBy(space = MaterialTheme.spacers.extraSmall),
+                ) {
+                    Text(
+                        text = stringResource(R.string.movies_listing_rating_format, movie.voteAverage),
+                        style = MaterialTheme.typography.labelMedium,
+                        color = MaterialTheme.colorScheme.primary,
+                    )
+
+                    Text(
+                        text = stringResource(R.string.movies_listing_popularity_format, movie.popularity),
+                        style = MaterialTheme.typography.labelMedium,
+                        color = MaterialTheme.colorScheme.primary,
+                    )
+                }
+
             }
         }
     }

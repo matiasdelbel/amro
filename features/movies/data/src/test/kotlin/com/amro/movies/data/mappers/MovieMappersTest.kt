@@ -1,4 +1,4 @@
-package com.amro.movies.data
+package com.amro.movies.data.mappers
 
 import com.amro.movies.data.remote.dto.GenreDto
 import com.amro.movies.data.remote.dto.MovieDetailDto

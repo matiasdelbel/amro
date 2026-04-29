@@ -58,9 +58,7 @@ AMRO/
 ```
 
 The `design-system` module owns the theme (`AmroTheme`), reusable Composables
-(`LoadingState`, `ErrorState`), and a `@ThemePreviews` multi-preview annotation that renders
-any component in both light and dark schemes — every public component in the module ships a
-Studio preview using it.
+(`LoadingState`, `ErrorState`).
 
 ### Module dependency rules
 
@@ -159,7 +157,6 @@ Run everything:
   test dependencies are wired in `app`) but no screen tests are committed. First candidate:
   `MoviesListingScreen` asserting the filter-chip / empty-state flow.
 - **End-to-end instrumentation tests** hitting a real or faked HTTP server.
-- **Screenshot tests** (Paparazzi / Roborazzi).
 
 These are natural next steps — the architecture is already set up to make them cheap.
 
@@ -214,5 +211,5 @@ These are natural next steps — the architecture is already set up to make them
   can live alongside the current approach.
 - **No API-level retry/backoff.** Ktor's `HttpRequestRetry` plugin can be dropped into
   `NetworkModule` in ~10 lines when we need it.
-- **No analytics.** Would add a `core-analytics` module with a single interface so features
+- **No analytics.** Would add a `core:analytics` module with a single interface so features
   depend on intent, not on a concrete SDK.

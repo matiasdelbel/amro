@@ -1,26 +1,19 @@
 package com.amro.movies.data
 
 import com.amro.core.coroutine.dispatcher.DispatcherProvider
-import com.amro.core.domain.DomainError
 import com.amro.core.domain.DomainResult
+import com.amro.movies.data.mappers.runCatchingDomain
+import com.amro.movies.data.mappers.toDomain
 import com.amro.movies.data.remote.MoviesRemoteDataSource
 import com.amro.movies.domain.Genre
 import com.amro.movies.domain.Movie
 import com.amro.movies.domain.MovieDetail
 import com.amro.movies.domain.repository.MoviesRepository
-import io.ktor.client.plugins.ClientRequestException
-import io.ktor.client.plugins.HttpRequestTimeoutException
-import io.ktor.client.plugins.ResponseException
-import io.ktor.client.plugins.ServerResponseException
-import io.ktor.serialization.ContentConvertException
-import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import kotlinx.coroutines.withContext
-import kotlinx.serialization.SerializationException
-import java.io.IOException
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -49,22 +42,24 @@ internal class MoviesRepositoryImpl @Inject constructor(
      * movies because page 4 was missing) would be confusing UX. If we ever want graceful
      * degradation, this is the place to introduce it.
      */
-    override suspend fun getTrendingTop100(): DomainResult<List<Movie>> = runCatchingDomain {
-        coroutineScope {
-            val genresDeferred = async { loadGenres() }
-            val pagesDeferred = (1..PAGES_FOR_TOP_100).map { page ->
-                async { remote.getTrendingMovies(page).results }
-            }
-            val genresById = genresDeferred.await()
-            val movies = pagesDeferred
-                .flatMap { it.await() }
-                .asSequence()
-                .distinctBy { it.id }
-                .take(TRENDING_LIMIT)
-                .map { it.toDomain(genresById) }
-                .toList()
+    override suspend fun getTrendingTop100(): DomainResult<List<Movie>> = withContext(dispatchers.io) {
+        runCatchingDomain {
+            coroutineScope {
+                val genresDeferred = async { loadGenres() }
+                val pagesDeferred = (1..PAGES_FOR_TOP_100).map { page ->
+                    async { remote.getTrendingMovies(page).results }
+                }
+                val genresById = genresDeferred.await()
+                val movies = pagesDeferred
+                    .flatMap { it.await() }
+                    .asSequence()
+                    .distinctBy { it.id }
+                    .take(TRENDING_LIMIT)
+                    .map { it.toDomain(genresById) }
+                    .toList()
 
-            movies
+                movies
+            }
         }
     }
 
@@ -75,44 +70,13 @@ internal class MoviesRepositoryImpl @Inject constructor(
     private suspend fun loadGenres(): Map<Int, Genre> {
         genreCache?.let { return it }
         return genreMutex.withLock {
+            // Re-check inside the lock: another caller may have populated the cache while we
+            // were waiting on the mutex, in which case we want to reuse it rather than fire a
+            // second `genre/movie/list` request.
             genreCache ?: remote.getMovieGenres().genres
                 .associate { it.id to it.toDomain() }
                 .also { genreCache = it }
         }
-    }
-
-    /**
-     * Wraps [block] and converts any [Throwable] into a [DomainResult.Failure].
-     *
-     * Two subtleties enforced here:
-     * - [CancellationException] is rethrown so structured concurrency works correctly
-     *   (a cancelled child must not be reported back as a "failure").
-     * - JVM [Error]s (OOM, StackOverflow, LinkageError, …) are rethrown as well: the process
-     *   is in an undefined state and pretending we recovered would mask real problems.
-     */
-    private inline fun <T> runCatchingDomain(block: () -> T): DomainResult<T> = try {
-        DomainResult.Success(block())
-    } catch (e: CancellationException) {
-        throw e
-    } catch (e: Throwable) {
-        if (e is Error) throw e
-        DomainResult.Failure(e.toDomainError())
-    }
-
-    private fun Throwable.toDomainError(): DomainError = when (this) {
-        is HttpRequestTimeoutException -> DomainError.Network(this)
-        is IOException -> DomainError.Network(this)
-        is ClientRequestException -> DomainError.Server(response.status.value, this)
-        is ServerResponseException -> DomainError.Server(response.status.value, this)
-        is ResponseException -> DomainError.Server(response.status.value, this)
-        // Malformed JSON / schema drift: distinct from `Server` because retrying won't help —
-        // the contract between client and server is broken. Ktor's ContentNegotiation wraps
-        // every kotlinx-serialization failure as `ContentConvertException` *before* it leaves
-        // the client (e.g. `JsonConvertException`), so we have to match that wrapper rather
-        // than the underlying `SerializationException` to actually catch wire-shape mismatches.
-        is ContentConvertException -> DomainError.Parsing(this)
-        is SerializationException -> DomainError.Parsing(this)
-        else -> DomainError.Unknown(this)
     }
 
     private companion object {

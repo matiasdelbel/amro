@@ -35,14 +35,14 @@ class MoviesListingViewModel @Inject constructor(
 
     fun toggleGenre(genreId: Int) {
         _state.update { current ->
-            val selected = current
+            val selectedGenreIds = current
                 .selectedGenreIds
                 .toMutableSet()
                 .apply { if (!add(genreId)) remove(genreId) }
 
             current.copy(
-                selectedGenreIds = selected,
-                visibleMovies = filterAndSortMovies(current.allMovies, genreFilter = selected, sort = current.sortOption),
+                selectedGenreIds = selectedGenreIds,
+                visibleMovies = filterAndSortMovies(current.allMovies, genreFilter = selectedGenreIds, sort = current.sortOption),
             )
         }
     }
@@ -51,7 +51,7 @@ class MoviesListingViewModel @Inject constructor(
         _state.update { current ->
             current.copy(
                 selectedGenreIds = emptySet(),
-                visibleMovies = filterAndSortMovies(current.allMovies, emptySet(), current.sortOption),
+                visibleMovies = filterAndSortMovies(current.allMovies, genreFilter = emptySet(), sort = current.sortOption),
             )
         }
     }
@@ -62,7 +62,7 @@ class MoviesListingViewModel @Inject constructor(
 
             current.copy(
                 sortOption = newSort,
-                visibleMovies = filterAndSortMovies(current.allMovies, current.selectedGenreIds, newSort),
+                visibleMovies = filterAndSortMovies(current.allMovies, genreFilter = current.selectedGenreIds, sort = newSort),
             )
         }
     }
@@ -77,7 +77,7 @@ class MoviesListingViewModel @Inject constructor(
             when (val result = getTrendingMovies()) {
                 is DomainResult.Success -> {
                     val all = result.value
-                    val genres = deriveGenres(all)
+                    val genres = deriveGenres(movies = all)
                     _state.update { current ->
                         current.copy(
                             isLoading = false,

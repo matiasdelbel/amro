@@ -1,8 +1,5 @@
-@file:OptIn(InternalSerializationApi::class)
-
 package com.amro.movies.data.remote.dto
 
-import kotlinx.serialization.InternalSerializationApi
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 

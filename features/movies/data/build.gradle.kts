@@ -15,11 +15,6 @@ dependencies {
     implementation(projects.core.network)
     implementation(projects.features.movies.domain)
 
-    implementation(libs.ktor.client.core)
-    implementation(libs.ktor.client.content.negotiation)
-    implementation(libs.kotlinx.serialization.json)
-    implementation(libs.kotlinx.coroutines.core)
-
     implementation(libs.hilt.android)
     ksp(libs.hilt.compiler)
 

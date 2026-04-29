@@ -28,7 +28,7 @@
     <string name="movies_listing_genre_chip_clear">Clear</string>
 
     <!-- MovieListItem -->
-    <!-- %1$.1f keeps the decimal separator locale-aware (e.g. "7.5 ★" vs "7,5 ★"). -->
+    <string name="movies_listing_popularity_format">Popularity %1$.1f</string>
     <string name="movies_listing_rating_format">%1$.1f ★</string>
 
     <!-- SortOptionsSheet -->

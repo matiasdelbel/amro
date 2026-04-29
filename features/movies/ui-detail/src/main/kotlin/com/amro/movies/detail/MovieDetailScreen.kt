@@ -165,7 +165,7 @@ private fun MovieDetailContent(
                     horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacers.small),
                     modifier = Modifier.fillMaxWidth(),
                 ) {
-                    movie.genres.take(4).forEach { g ->
+                    movie.genres.forEach { g ->
                         AssistChip(onClick = {}, label = { Text(g.name) })
                     }
                 }

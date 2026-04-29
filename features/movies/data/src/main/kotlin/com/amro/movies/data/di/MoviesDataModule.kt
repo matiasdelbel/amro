@@ -6,16 +6,14 @@ import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import javax.inject.Singleton
 
 /**
  * Binds the data-layer repository implementation to the domain-layer contract.
  */
 @Module
 @InstallIn(SingletonComponent::class)
-internal abstract class MoviesDataBindings {
+internal abstract class MoviesDataModule {
 
     @Binds
-    @Singleton
     abstract fun bindMoviesRepository(impl: MoviesRepositoryImpl): MoviesRepository
 }

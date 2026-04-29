@@ -20,10 +20,6 @@ class MainActivity : ComponentActivity() {
 
     private fun openExternalUrl(url: String) {
         val intent = Intent(Intent.ACTION_VIEW, url.toUri())
-        val canHandleIntent = intent.resolveActivity(packageManager) != null
-
-        if (canHandleIntent) {
-            startActivity(intent)
-        }
+        startActivity(intent)
     }
 }
