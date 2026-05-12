@@ -1,5 +1,6 @@
 package com.amro.movies.domain.usecase
 
+import com.amro.core.testing.TestDispatcherProvider
 import com.amro.movies.domain.Genre
 import com.amro.movies.domain.Movie
 import com.amro.movies.domain.SortCriterion
@@ -7,11 +8,12 @@ import com.amro.movies.domain.SortDirection
 import com.amro.movies.domain.SortOption
 import com.google.common.truth.Truth.assertThat
 import java.time.LocalDate
+import kotlinx.coroutines.test.runTest
 import org.junit.Test
 
 class FilterAndSortMoviesUseCaseTest {
 
-    private val useCase = FilterAndSortMoviesUseCase()
+    private val useCase = FilterAndSortMoviesUseCase(dispatchers = TestDispatcherProvider())
 
     private val comedy = Genre(1, "Comedy")
     private val action = Genre(2, "Action")
@@ -25,31 +27,31 @@ class FilterAndSortMoviesUseCaseTest {
     private val all = listOf(a, b, c, d)
 
     @Test
-    fun `empty filter returns all movies`() {
+    fun `empty filter returns all movies`() = runTest {
         val result = useCase(all, genreFilter = emptySet())
         assertThat(result).hasSize(4)
     }
 
     @Test
-    fun `genre filter keeps only matching movies`() {
+    fun `genre filter keeps only matching movies`() = runTest {
         val result = useCase(all, genreFilter = setOf(comedy.id))
         assertThat(result.map { it.id }).containsExactly(c.id, a.id).inOrder() // popularity desc default
     }
 
     @Test
-    fun `multi-genre filter matches movies belonging to any selected genre`() {
+    fun `multi-genre filter matches movies belonging to any selected genre`() = runTest {
         val result = useCase(all, genreFilter = setOf(action.id, drama.id))
         assertThat(result.map { it.id }).containsExactly(b.id, c.id, d.id).inOrder()
     }
 
     @Test
-    fun `default sort is popularity descending`() {
+    fun `default sort is popularity descending`() = runTest {
         val result = useCase(all)
         assertThat(result.map { it.id }).containsExactly(b.id, c.id, d.id, a.id).inOrder()
     }
 
     @Test
-    fun `title sort is case-insensitive and ascending`() {
+    fun `title sort is case-insensitive and ascending`() = runTest {
         val result = useCase(
             all,
             sort = SortOption(SortCriterion.Title, SortDirection.Ascending),
@@ -59,7 +61,7 @@ class FilterAndSortMoviesUseCaseTest {
     }
 
     @Test
-    fun `release date sort puts unknown dates last`() {
+    fun `release date sort puts unknown dates last`() = runTest {
         val result = useCase(
             all,
             sort = SortOption(SortCriterion.ReleaseDate, SortDirection.Descending),
@@ -69,7 +71,7 @@ class FilterAndSortMoviesUseCaseTest {
     }
 
     @Test
-    fun `release date sort ascending also keeps unknown dates last`() {
+    fun `release date sort ascending also keeps unknown dates last`() = runTest {
         val result = useCase(
             all,
             sort = SortOption(SortCriterion.ReleaseDate, SortDirection.Ascending),

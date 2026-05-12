@@ -7,8 +7,11 @@ android {
 }
 
 dependencies {
+    api(projects.core.coroutine)
     api(projects.core.domain)
+
     implementation(libs.javax.inject)
+    implementation(libs.kotlinx.coroutines.core)
 
     testImplementation(projects.core.testing)
 }

@@ -140,7 +140,7 @@ Tests are scoped to the module that owns the code under test.
 
 | Layer | What we test | How |
 |---|---|---|
-| Domain | `FilterAndSortMoviesUseCase` – filter, sort, edge cases (blank dates, multi-genre match) | Plain JUnit, no mocks — it's a pure function. |
+| Domain | `FilterAndSortMoviesUseCase` – filter, sort, edge cases (blank dates, multi-genre match) | `runTest` + `TestDispatcherProvider` so `withContext(default)` is deterministic. |
 | Data | `MoviesRepositoryImpl` – error mapping, genre resolution | Ktor `MockEngine` for HTTP, `TestDispatcherProvider` so `withContext(io)` becomes deterministic. |
 | Data | `MovieMappers` – DTO → domain model | JUnit, no Android framework. |
 | Presentation | `MoviesListingViewModel`, `MovieDetailViewModel` | MockK for the repository, Turbine for StateFlow assertions, `Dispatchers.setMain` for the Main dispatcher. |

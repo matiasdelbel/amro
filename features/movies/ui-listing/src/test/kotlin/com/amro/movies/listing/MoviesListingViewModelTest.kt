@@ -5,6 +5,7 @@ import com.amro.core.domain.DomainError
 import com.amro.core.domain.DomainResult
 import com.amro.movies.domain.Genre
 import com.amro.movies.domain.Movie
+import com.amro.core.testing.TestDispatcherProvider
 import com.amro.movies.domain.repository.MoviesRepository
 import com.amro.movies.domain.usecase.FilterAndSortMoviesUseCase
 import com.amro.movies.domain.usecase.GetTrendingMoviesUseCase
@@ -28,7 +29,7 @@ import org.junit.Test
 class MoviesListingViewModelTest {
 
     private val repository: MoviesRepository = mockk()
-    private val filterAndSort = FilterAndSortMoviesUseCase()
+    private val filterAndSort = FilterAndSortMoviesUseCase(dispatchers = TestDispatcherProvider())
 
     private val comedy = Genre(1, "Comedy")
     private val action = Genre(2, "Action")

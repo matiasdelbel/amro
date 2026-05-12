@@ -1,9 +1,11 @@
 package com.amro.movies.domain.usecase
 
+import com.amro.core.coroutine.dispatcher.DispatcherProvider
 import com.amro.movies.domain.Movie
 import com.amro.movies.domain.SortCriterion
 import com.amro.movies.domain.SortDirection
 import com.amro.movies.domain.SortOption
+import kotlinx.coroutines.withContext
 import java.util.Locale
 import javax.inject.Inject
 
@@ -15,17 +17,18 @@ import javax.inject.Inject
  *   An empty filter means "show all" (no filtering), matching the spec's "top 100" behaviour.
  * - Sort is stable. `null` release dates sort **last** regardless of direction, so users never
  *   see a block of "unknown date" items at the top when sorting ascending.
- * - The use case has no dependency on Android, coroutines, or the repository, so it's trivial
- *   to unit-test — which is exactly what protects the "filter within the 100 we already have"
- *   rule from regressing.
+ * - Work runs on [DispatcherProvider.default] via [withContext], so filtering/sorting does not
+ *   block the UI thread. Tests supply a `DispatcherProvider` double (for example from `:core:testing`).
  */
-class FilterAndSortMoviesUseCase @Inject constructor() {
+class FilterAndSortMoviesUseCase @Inject constructor(
+    private val dispatchers: DispatcherProvider,
+) {
 
-    operator fun invoke(
+    suspend operator fun invoke(
         movies: List<Movie>,
         genreFilter: Set<Int> = emptySet(),
         sort: SortOption = SortOption.Default,
-    ): List<Movie> {
+    ): List<Movie> = withContext(context = dispatchers.default) {
         val filtered = if (genreFilter.isEmpty()) {
             movies
         } else {
@@ -33,7 +36,8 @@ class FilterAndSortMoviesUseCase @Inject constructor() {
         }
 
         val ascending = sort.direction == SortDirection.Ascending
-        return when (sort.criterion) {
+
+        when (sort.criterion) {
             SortCriterion.Popularity ->
                 if (ascending) filtered.sortedBy { it.popularity }
                 else filtered.sortedByDescending { it.popularity }

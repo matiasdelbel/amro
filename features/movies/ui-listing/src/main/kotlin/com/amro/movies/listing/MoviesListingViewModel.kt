@@ -34,36 +34,58 @@ class MoviesListingViewModel @Inject constructor(
     fun retry() = loadMovies(initial = true)
 
     fun toggleGenre(genreId: Int) {
-        _state.update { current ->
+        viewModelScope.launch {
+            val current = _state.value
             val selectedGenreIds = current
                 .selectedGenreIds
                 .toMutableSet()
                 .apply { if (!add(genreId)) remove(genreId) }
-
-            current.copy(
-                selectedGenreIds = selectedGenreIds,
-                visibleMovies = filterAndSortMovies(current.allMovies, genreFilter = selectedGenreIds, sort = current.sortOption),
+            val visibleMovies = filterAndSortMovies(
+                movies = current.allMovies,
+                genreFilter = selectedGenreIds,
+                sort = current.sortOption,
             )
+            _state.update { state ->
+                state.copy(
+                    selectedGenreIds = selectedGenreIds,
+                    visibleMovies = visibleMovies,
+                )
+            }
         }
     }
 
     fun clearGenreFilter() {
-        _state.update { current ->
-            current.copy(
-                selectedGenreIds = emptySet(),
-                visibleMovies = filterAndSortMovies(current.allMovies, genreFilter = emptySet(), sort = current.sortOption),
+        viewModelScope.launch {
+            val current = _state.value
+            val visibleMovies = filterAndSortMovies(
+                movies = current.allMovies,
+                genreFilter = emptySet(),
+                sort = current.sortOption,
             )
+            _state.update { state ->
+                state.copy(
+                    selectedGenreIds = emptySet(),
+                    visibleMovies = visibleMovies,
+                )
+            }
         }
     }
 
     fun updateSort(criterion: SortCriterion, direction: SortDirection) {
-        _state.update { current ->
+        viewModelScope.launch {
+            val current = _state.value
             val newSort = SortOption(criterion, direction)
-
-            current.copy(
-                sortOption = newSort,
-                visibleMovies = filterAndSortMovies(current.allMovies, genreFilter = current.selectedGenreIds, sort = newSort),
+            val visibleMovies = filterAndSortMovies(
+                movies = current.allMovies,
+                genreFilter = current.selectedGenreIds,
+                sort = newSort,
             )
+            _state.update { state ->
+                state.copy(
+                    sortOption = newSort,
+                    visibleMovies = visibleMovies,
+                )
+            }
         }
     }
 
@@ -78,17 +100,19 @@ class MoviesListingViewModel @Inject constructor(
                 is DomainResult.Success -> {
                     val all = result.value
                     val genres = deriveGenres(movies = all)
+                    val snapshot = _state.value
+                    val visibleMovies = filterAndSortMovies(
+                        movies = all,
+                        genreFilter = snapshot.selectedGenreIds,
+                        sort = snapshot.sortOption,
+                    )
                     _state.update { current ->
                         current.copy(
                             isLoading = false,
                             isRefreshing = false,
                             allMovies = all,
                             availableGenres = genres,
-                            visibleMovies = filterAndSortMovies(
-                                movies = all,
-                                genreFilter = current.selectedGenreIds,
-                                sort = current.sortOption,
-                            ),
+                            visibleMovies = visibleMovies,
                             error = null,
                         )
                     }
